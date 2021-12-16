@@ -54,42 +54,20 @@ class ResultVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         cell.previewURL = NetworkManager.authorsResults[indexPath.row].previewUrl
         
-        //        if let imageURL = URL(string:  NetworkManager.authorsResults[indexPath.row].artworkUrl100 ?? "") {
-        //
-        //            let imgDownloadTask = networkManager.downloadImage(url: imageURL) { result in
-        //                switch result {
-        //                case .success(let data):
-        //                    let img = UIImage(data: data)
-        //                    DispatchQueue.main.async {
-        //                        cell.resultImage.image = img
-        //                    }
-        //                case .failure(let error):
-        //                    print(error)
-        //                }
-        //            }
-        //            cell.imageDownloadTask = imgDownloadTask
-        //        }
-        
-        if let cachedImage = imageCache.object(forKey: NetworkManager.authorsResults[indexPath.row].artworkUrl100 as AnyObject){
-            debugPrint("image downloaded from cache for \(NetworkManager.authorsResults[indexPath.row].artworkUrl100!)")
-            cell.resultImage.image = cachedImage
-        } else {
-            if let imageURL = URL(string:  NetworkManager.authorsResults[indexPath.row].artworkUrl100 ?? "") {
-                
-                let imgDownloadTask = networkManager.downloadImage(url: imageURL) { result in
-                    switch result {
-                    case .success(let data):
-                        let img = UIImage(data: data)
-                        DispatchQueue.main.async {
-                            self.imageCache.setObject(img! , forKey: NetworkManager.authorsResults[indexPath.row].artworkUrl100 as AnyObject)
-                            cell.resultImage.image = img
-                        }
-                    case .failure(let error):
-                        print(error)
+        if let imageURL = URL(string:  NetworkManager.authorsResults[indexPath.row].artworkUrl100 ?? "") {
+            
+            let imgDownloadTask = networkManager.downloadImage(url: imageURL) { result in
+                switch result {
+                case .success(let data):
+                    let img = UIImage(data: data)
+                    DispatchQueue.main.async {
+                        cell.resultImage.image = img
                     }
+                case .failure(let error):
+                    print(error)
                 }
-                cell.imageDownloadTask = imgDownloadTask
             }
+            cell.imageDownloadTask = imgDownloadTask
         }
         
         return cell
