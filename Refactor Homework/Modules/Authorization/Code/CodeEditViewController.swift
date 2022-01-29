@@ -34,7 +34,7 @@ class CodeEditViewController: UIViewController {
     }
     
     let activityIndicator = UIActivityIndicatorView(style: .large)
-
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class CodeEditViewController: UIViewController {
         label.textColor = .label
         return label
     }()
-
+    
     let phoneLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +71,7 @@ class CodeEditViewController: UIViewController {
         
         return textField
     }()
-
+    
     let continueButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ class CodeEditViewController: UIViewController {
         
         presenter.viewWillAppearEvent()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.viewDidLoadEvent()
@@ -160,11 +160,11 @@ extension CodeEditViewController: UITextFieldDelegate {
 
 extension CodeEditViewController {
     
-//    func sendSMSClicked() {
-//        hideKB()
-//        navigationController?.popToRootViewController(animated: true)
-//    }
-
+    //    func sendSMSClicked() {
+    //        hideKB()
+    //        navigationController?.popToRootViewController(animated: true)
+    //    }
+    
     fileprivate func enableCodeButton(_ enabled: Bool) {
         continueButton.isEnabled = enabled
         continueButton.backgroundColor = (enabled) ? .systemBlue : .lightGray
@@ -199,7 +199,7 @@ extension CodeEditViewController {
 extension CodeEditViewController: CodeView {
     
     func setupView() {
-   
+        
         view.backgroundColor = .white
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         
@@ -218,7 +218,12 @@ extension CodeEditViewController: CodeView {
         
         codeField.delegate = self
         
-        continueButton.addTarget(self, action: #selector(CodePresenter.checkCode), for: .touchUpInside)
+        continueButton.addTarget(self, action: #selector(checkCode), for: .touchUpInside)
+    }
+    
+    @objc func checkCode() {
+        print(codeField.text)
+        presenter.checkCode(code: codeField.text ?? "")
     }
     
     func layoutView() {
@@ -235,7 +240,7 @@ extension CodeEditViewController: CodeView {
             codeField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             codeField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             codeField.heightAnchor.constraint(equalToConstant: 42),
-                        
+            
             continueButtonBottomConstraint,
             continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
